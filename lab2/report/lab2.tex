@@ -3,26 +3,28 @@
 \usepackage[russian]{babel}
 %\usepackage[14pt]{extsizes}
 \usepackage{listings}
+
 \usepackage{graphicx}
-\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\graphicspath{{src/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
 
 % Для листинга кода:
 \lstset{ %
-language=python,                 % выбор языка для подсветки (здесь это python)
-basicstyle=\small\sffamily, % размер и начертание шрифта для подсветки кода
-numbers=left,               % где поставить нумерацию строк (слева\справа)
-numberstyle=\tiny,           % размер шрифта для номеров строк
-stepnumber=1,                   % размер шага между двумя номерами строк
-numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
-showspaces=false,            % показывать или нет пробелы специальными отступами
-showstringspaces=false,      % показывать или нет пробелы в строках
-showtabs=false,             % показывать или нет табуляцию в строках
-frame=single,              % рисовать рамку вокруг кода
-tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
-captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
-breaklines=true,           % автоматически переносить строки (да\нет)
-breakatwhitespace=false, % переносить строки только если есть пробел
-escapeinside={\#*}{*)}   % если нужно добавить комментарии в коде
+	language=python,                 % выбор языка для подсветки (здесь это python)
+	basicstyle=\small\sffamily, % размер и начертание шрифта для подсветки кода
+	numbers=left,               % где поставить нумерацию строк (слева\справа)
+	numberstyle=\tiny,           % размер шрифта для номеров строк
+	stepnumber=1,                   % размер шага между двумя номерами строк
+	numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
+	showspaces=false,            % показывать или нет пробелы специальными отступами
+	showstringspaces=false,      % показывать или нет пробелы в строках
+	showtabs=false,             % показывать или нет табуляцию в строках
+	frame=single,              % рисовать рамку вокруг кода
+	tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
+	captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
+	breaklines=true,           % автоматически переносить строки (да\нет)
+	breakatwhitespace=false, % переносить строки только если есть пробел
+	escapeinside={\#*}{*)}   % если нужно добавить комментарии в коде
 }
 
 % Для измененных титулов глав:
@@ -38,553 +40,360 @@ escapeinside={\#*}{*)}   % если нужно добавить коммента
 \usepackage{filecontents}
 \usetikzlibrary{datavisualization}
 \usetikzlibrary{datavisualization.formats.functions}
-\begin{filecontents}{LevR.dat}
-100 45504
-200 344852
-300 1626090
-400 4410053
-500 8809530
-600 15523926
-700 27314819
-800 36896674
-900 151438792
-1000 253111941
-\end{filecontents}
-
-\begin{filecontents}{LevT.dat}
-100 50613
-200 254889
-300 1164803
-400 3277843
-500 6466829
-600 10441740
-700 20235150
-800 27982176
-900 115139281
-1000 199701561
-\end{filecontents}
-
-\begin{filecontents}{DamLevR.dat}
-100 22663
-200 189215
-300 937882
-400 2605948
-500 5077237
-600 9041331
-700 15047492
-800 20829956
-900 85256627
-1000 158414218
-\end{filecontents}
-
-
-
-\begin{filecontents}{LevR1.dat}
-101 45393
-201 386372
-301 1557256
-401 4538718
-501 9009942
-601 15214595
-701 26603522
-801 37648086
-901 139235577
-1001 278285719
-\end{filecontents}
-
-\begin{filecontents}{LevT1.dat}
-101 35265
-201 364594
-301 1113414
-401 3314034
-501 6511456
-601 11947585
-701 20274021
-801 26844301
-901 136919210
-1001 212082553
-\end{filecontents}
-
-\begin{filecontents}{DamLevR1.dat}
-101 38152
-201 196174
-301 919775
-401 2652528
-501 5171817
-601 10328122
-701 15001586
-801 20867237
-901 108043316
-1001 165932409
-\end{filecontents}
-
 
 
 \begin{document}
-%\def\chaptername{} % убирает "Глава"
-\begin{titlepage}
-	\centering
-	{\scshape\LARGE Федеральное государственное бюджетное образовательное учреждение высшего образования «Московский государственный технический университет имени Н.Э. Баумана (национальный исследовательский университет)» (МГТУ им. Н.Э. Баумана) \par}
-	\vspace{3cm}
-	{\scshape\Large Лабораторная работа №2\par}
-	\vspace{0.5cm}	
-	{\scshape\Large По курсу: "Анализ алгоритмов"\par}
-	\vspace{1.5cm}
-	{\huge\bfseries Алгоритмы умножения матриц\par}
-	\vspace{2cm}
-	\Large Работу выполнил: Власенко Артём, ИУ7-54Б\par
-	\vspace{0.5cm}
-	\LargeПреподаватели:  Волкова Л.Л., Строганов Ю.В.\par
-
-	\vfill
-	\large \textit {Москва, 2020} \par
-\end{titlepage}
-
-\tableofcontents
-
-\newpage
-\chapter*{Введение}
-\addcontentsline{toc}{chapter}{Введение}
-Цель работы - изучение алгоритмов умножения матриц. В данной лабораторной работе рассматривается стандартный алгоритм умножения матриц, алгоритм Винограда и модифицированный алгоритм Винограда. Также требуется провести рассчет сложности алгоритмов, получить навыки в оптимизации алгоритмов.
-Использованные алгоритмы активно применяются во всех областях, применяющих линейную алгебру, таких как:
-\begin{itemize}
-	\item компьютерная графика;
-	\item физика;
-	\item экономика;
-	\item прочее.
-\end{itemize}
-
-В ходе лабораторной работы предстоит:
-\begin{itemize}
-	\item изучить алгоритмы умножения матриц: стандартный и алгоритм Винограда;
-	\item улучшить алгоритм Винограда;
-	\item дать теоретическую оценку базового алгоритма умножения матриц, алгоритма Винограда и улучшенного алгоритма Винограда;
-	\item реализовать три алгоритма умножения матриц на одном из языков программирования;
-	\item сравнить алгоритмы умножения матриц.
-\end{itemize}
-
-
-
-
-
-\chapter{Аналитическая часть}
-Матрица - математический объект, эквивалентный двумерному массиву. Числа располагаются в матрице по строкам и столбцам. Если число столбцов в первой матрице совпадает с числом строк во второй, то эти две матрицы можно перемножить. У произведения будет столько же строк, сколько в первой матрице, и столько же столбцов, сколько во второй. Постановка задачи перемножения матриц описана в [1].
-	    
-\section{Классический алгоритм умножения матриц}
-Пусть даны две прямоугольные матрицы А и В размерности m на n и n на l соответсвенно: 
-\[ \begin{bmatrix}
-a_{1,1} & ... & a_{1,n} \\
-... & ... & ... \\
-a_{m,1} & ... & a_{m,n} \\
-\end{bmatrix} \]\\
-
-\[ \begin{bmatrix}
-b_{1,1} & ... & b_{1,l} \\
-... & ... & ... \\
-b_{n,1} & ... & b_{n,l} \\
-\end{bmatrix} \]\\
-
-В результате получим матрицу C размерности m на l:
+	%\def\chaptername{} % убирает "Глава"
+	\begin{titlepage}
+		\centering
+		{\scshape\LARGE МГТУ им. Баумана \par}
+		\vspace{3cm}
+		{\scshape\Large Лабораторная работа №3\par}
+		\vspace{0.5cm}	
+		{\scshape\Large По курсу: "Анализ алгоритмов"\par}
+		\vspace{1.5cm}
+		{\huge\bfseries Алгоритмы сортировки\par}
+		\vspace{2cm}
+		\Large Работу выполнила: Козаченко Александр, ИУ7-54Б\par
+		\vspace{0.5cm}
+		\LargeПреподаватели:  Волкова Л.Л., Строганов Ю.В.\par
+		
+		\vfill
+		\large \textit {Москва, 2019} \par
+	\end{titlepage}
 	
-\[ \begin{bmatrix}
-c_{1,1} & ... & c_{1,l} \\
-... & ... & ... \\
-c_{m,1} & ... & c_{m,l} \\
-\end{bmatrix} \]\\
-
-
-$c_{i,j} = \sum\limits_{r=1}^n a_{i,r}\cdot b_{r,j}$ называется произведением матриц A и B.
-
-
-\section{Алгоритм Винограда}
-Рассмотрим два вектора $V = (v1, v2, v3, v4)$ и $W = (w1, w2, w3, w4)$. Их скалярное произведение равно: 
-
-$ V \cdot W=v_1 \cdot w_1 + v_2 \cdot w_2 + v_3 \cdot w_3 + v_4 \cdot w_4$ \\
-
-Это равенство можно переписать в виде: \\
-$V \cdot W=(v_1 + w_2) \cdot (v_2 + w_1) + (v_3 + w_4) \cdot (v_4 + w_3) - v_1 \cdot v_2 - v_3 \cdot v_4 - w_1 \cdot w_2 - w_3 \cdot w_4$\\
-
-Менее очевидно, что выражение в правой части последнего равенства допускает предварительную обработку: его части можно вычислить заранее и запомнить для каждой строки первой матрицы и для каждого столбца второй. 
-Это означает, что над предварительно обработанными элементами нам придется выполнять лишь первые два умножения и последующие пять сложений, а также дополнительно два сложения. Подробое описание алгоритма Винограда можно найти в [2].
-
-\subsection{Вывод}
-Были рассмотрены алгоритмы классического умножения матриц и алгоритм Винограда, основная отличительная черта которого — наличие предварительной обработки, а также уменьшение количества операций умножения.
-
-
-\chapter{Конструкторская часть}
-\textbf{Требования к вводу:}\\
-\begin{itemize}
-	\item на вход подаются две матрицы и их размерности.
-\end{itemize}
-
-\textbf{Требования к выводу:}\\
-\begin{itemize}
-	\item корректное произведение введённых матриц или сообщение об ошибке в случае неккоректного ввода.
-\end{itemize}
-
-
-\section{Схемы алгоритмов}
-В данной части будут рассмотрены схемы алгоритмов. Схема классического алгоритма умножения матриц показана на рисунке 2.1, схема алгоритма Винограда - на рисунке 2.2, схема оптимизированного алгоритма Винограда - на рисунке 2.3.
-
-\begin{figure}[pt]
-\centering
-\includegraphics[scale=0.6]{alg1.jpg}
-\caption{Схема классического алгоритма умножения матриц}
-\label{fig:mpr}
-\end{figure}
-
-\begin{figure}[pt]
-\centering
-\includegraphics[scale=0.6]{alg2.jpg}
-\caption{Схема алгоритма Винограда}
-\label{fig:mpr}
-\end{figure}
-
-
-\begin{figure}[pt]
-\centering
-\includegraphics[scale=0.6]{alg3.jpg}
-\caption{Схема оптимизированного алгоритма Винограда}
-\label{fig:mpr}
-\end{figure}
-
-\newpage
-\section{Трудоемкость алгоритмов}
-Введем модель трудоемкости для оценки алгоритмов: 
-\begin{itemize}
-	\item базовые операции стоимостью 1 — +, -, *, /, =, ==, <=, >=, !=, +=, [];
-	\item оценка трудоемкости цикла for от 0 до N с шагом 1 $F_{for} = 2 + N \cdot (2 + F_{body})$, где $F_{body}$ - тело цикла;
-	\item стоимость условного перехода применим за 0, стоимость вычисления условия остаётся.
-\end{itemize}
-
-Оценим трудоемкость алгоритмов по коду программы.
-
-\subsection{Классический алгоритм}
-Рассмотрим трудоемкость классического алгоритма:\\
-
-$10MNQ + 4MQ + 4 M + 2$ \\
-
-
-\subsection{Алгоритм Винограда}
-
-Рассмотрим трудоемкость алгоритма Винограда:\\
-
-Трудоемкость алгоритма Винограда:\\
-
-Первый цикл: $15/2 \cdot M  N + 5 \cdot M + 2$ \\
-
-Второй цикл: $15/2 \cdot M  N + 5 \cdot M + 2$\\
-
-Третий цикл: $13 \cdot M  N Q + 12 \cdot M Q + 4 \cdot M + 2$\\
-
-Условный переход: $\begin{bmatrix}
-             2    &&, \text{в случае невыполнения условия}\\
-             15 \cdot QM + 4 \cdot M + 2 &&, \text{в случае выполнения условия}\\
-           \end{bmatrix} $ \\
-
-Итого: $15/2 \cdot M  N + 5 \cdot M + 2 + 15/2 \cdot M  N + 5 \cdot M + 2 + 13 \cdot M  N Q + 12 \cdot M Q + 4 \cdot M + 2 +
-       \begin{bmatrix}
-             2    &&, \text{в случае невыполнения условия}\\
-             15 \cdot QM + 4 \cdot M + 2 &&, \text{в случае выполнения условия}\\
-           \end{bmatrix} $ \\
-
-\subsection{Оптимизированный алгоритм Винограда}
-
-Рассмотрим трудоемкость алгоритма Винограда:\\
-
-Трудоемкость алгоритма Винограда:\\
-
-Первый цикл: $11/2 \cdot M  N + 4 \cdot M + 2$ \\
-
-Второй цикл: $11/2 \cdot M  N + 4 \cdot M + 2$\\
-
-Третий цикл: $17/2 \cdot M  N Q + 9 \cdot M Q + 4 \cdot M + 2$\\
-
-Условный переход: $\begin{bmatrix}
-             1    &&, \text{в случае невыполнения условия}\\
-             10 \cdot QM + 4 \cdot M + 2 &&, \text{в случае выполнения условия}\\
-           \end{bmatrix} $ \\
-
-Итого: $11/2 \cdot M  N + 4 \cdot M + 2 + 11/2 \cdot M  N + 4 \cdot M + 2 + 15/2 \cdot M  N Q + 9 \cdot M Q + 4 \cdot M + 2 +
-       \begin{bmatrix}
-             1    &&, \text{в случае невыполнения условия}\\
-             10 \cdot QM + 4 \cdot M + 2 &&, \text{в случае выполнения условия}\\
-           \end{bmatrix} $ \\
-
-
-
-\chapter{Технологическая часть}
-\section{Выбор ЯП}
-Для реализации программ был выбран язык программирования C++, ввиду наличия опыта разработки на нём. Среда разработки - Clion. \\
-
-Для замера процессорного времени используется функция, возвращающая количество тиков.\\
-
-\begin{lstlisting}[label=some-code,caption=Функция получения тиков]
-unsigned long long getTicks(void)
-{
-    unsigned long long d;
-    __asm__ __volatile__ ("rdtsc" : "=A" (d) );
-    return d;
-}
-
-\end{lstlisting}
-
-\section{Реализация алгоритма}
-
-\begin{lstlisting}[label=some-code,caption=Функция классического умножения матриц]
-def MatrMult(m1, m2):
-	r2 = len(m2)
-	c1 = len(m1[0])
+	\tableofcontents
 	
-	if r2 != c1:
-		return
+	\newpage
+	\chapter*{Введение}
+	\addcontentsline{toc}{chapter}{Введение}
 	
-	r1 = len(m1)
-	c2 = len(m2[0])
+	На данный момент существует огромное количество вариаций сортировок.
+	Эти алгоритмы необходимо уметь сравнивать, чтобы выбирать наилучше подходящие в конкретном случае. 
 	
-	res = [[0 for i in range(c2)] for j in range(r1)]
+	Эти алгоримы оцениваются по:
 	
-	for i in range(r1):
-		for j in range(c2):
-			for k in range(c1):
-				res[i][j] += m1[i][k] * m2[k][j]
-	return res
-\end{lstlisting}
-
-
-\begin{lstlisting}[label=some-code,caption=Алгоритм Винограда]
-def MatrMultVin(mx1, mx2):
-	n1 = len(mx1)
-	n2 = len(mx2)
+	\begin{itemize}
+		\item Времени быстродействия
+		\item Затратам памяти
+	\end{itemize}
 	
-	if (n1 == 0 or n2 == 0):
-		return
-	
-	m1 = len(mx1[0])
-	m2 = len(mx2[0])
-	if (m1 == 0 or m2 == 0):
-		return
-	
-	mulH = [0 for i in range(n1)]
-	mulV = [0 for i in range(m2)]
-	
-	res = [[0 for i in range(m2)] for i in range(n1)]
-	
-	for i in range(n1):
-		for j in range(int(m1 // 2)):
-			mulH[i] = mulH[i] + mx1[i][j * 2] * mx1[i][j * 2 + 1]
-	
-	for i in range(m2):
-		for j in range(int(m1 // 2)):
-			mulV[i] = mulV[i] + mx2[j * 2][i] * mx2[j * 2 + 1][i]
-	
-	for i in range(n1):
-		for j in range(m2):
-			res[i][j] = -mulH[i] - mulV[j]
-	for k in range(int(m1/2)):
-		res[i][j] = res[i][j] + (mx1[i][2 * k + 1] + mx2[2 * k][j]) * (mx1[i][2*k] + mx2[2 * k + 1][j])
-	
-	if m1 % 2 == 1:
-		for i in range(n1):
-			for j in range(m2):
-				res[i][j] = res[i][j] + mx1[i][m1 - 2] * mx2[m1 - 1][j]
-	
-	return(res)
-\end{lstlisting}
-
-
-\begin{lstlisting}[label=some-code,caption=Оптимизированный алгоритм Винограда]
-def Vinograd_optim(matrix1, matrix2):
-	n1 = len(matrix1)
-	n2 = len(matrix2)
-	
-	if (n1 == 0 or n2 == 0):
-		return
-	
-	m1 = len(matrix1[0])
-	m2 = len(matrix2[0])
-	if (m1 == 0 or m2 == 0):
-		return
-	
-	mulH = [0 for i in range(n1)]
-	mulV = [0 for i in range(m2)]
-	
-	result = [[0 for i in range(m2)] for i in range(n1)]
-	
-	m1Mod2 = m1 % 2;
-	n2Mod2 = n2 % 2;
-	
-	for i in range(n1):
-		for j in range (0, m1 - m1Mod2, 2):
-			mulH[i] += matrix1[i][j] * matrix1[i][j + 1]
+	Целью данной лабораторной работы является изучение применений алгоритмов сортировки, обучение расчету трудоемкости алгоритмов.
 	
 	
-	for i in range(m2):
-		for j in range(0, n2 - n2Mod2, 2):
-			mulV[i] += matrix2[j][i] * matrix2[j + 1][i];
+	\chapter{Аналитическая часть}
+	\section{Описание алгоритмов}
+	Сортировка массива — одна из самых популярных операций над массивом. Алгоритмы реализуют упорядочивание элементов в списке.
+	В случае, когда элемент списка имеет несколько полей, поле, служащее критерием порядка, называется ключом сортировки
+	\textbf{Область применения:} 
+	\begin{itemize}
+		\item физика,
+		\item математика,
+		\item экономика,
+		\item итд.
+	\end{itemize}
 	
-	for i in range(n1):
-		for j in range(m2):
-			buff = -(mulH[i] + mulV[j])
-		for k in range(0, m1 - m1Mod2, 2):
-			buff += (matrix1[i][k + 1] + matrix2[k][j]) * (matrix1[i][k] + matrix2[k + 1][j]);
-		result[i][j] = buff;
+	\subsection{Сортировка вставками}
+	На каждом шаге выбирается один из элементов неотсортированной части массива (максимальный/минимальный) 
+	и помещается на нужную позицию в отсортированную часть массива.
 	
-	if (m1Mod2):
-		m1Min_1 = m1 - 1
-	for i in range(n1):
-		for j in range(m2):
-			result[i][j] += matrix1[i][m1Min_1]	* matrix2[m1Min_1][j]
-	return result
-\end{lstlisting}
-
-\subsection{Оптимизация алгоритма Винограда}
-В качестве оптимизации алгоритма Винограда можно выделить следующие пункты:
-\begin{enumerate}
-	\item избавиться от деления в цикле;
-	\item замена $mulH[i] = mulH[i] + …$ на $mulH[i] += …$ (аналогично для $mulV[i]$);
-	\begin{lstlisting}[label=some-code,caption=Оптимизации алгоритма Винограда №1 и №2]
-	m1Mod2 = m1 % 2;
-	n2Mod2 = n2 % 2;
+	\subsection{Гномья сортировка}
+	Это метод, которым садовый гном сортирует линию цветочных горшков. По существу он смотрит на текущий и предыдущий садовые горшки: если они в правильном порядке, он шагает на один горшок вперёд, иначе он меняет их местами и шагает на один горшок назад. Граничные условия: если нет предыдущего горшка, он шагает вперёд; если нет следующего горшка, он закончил.
 	
-	for i in range(n1):
-		for j in range (0, m1 - m1Mod2, 2):
-			mulH[i] += matrix1[i][j] * matrix1[i][j + 1]
+	\subsection {Быстрая сортировка}
+	Массив разбивается на два (возможно пустых) подмассива. Таких, что в одном подмассиве каждый элемент меньше либо равен опорному, 
+	и при этом не превышает любой элемент второго подмассива. Опорный элемент вычислыется в ходе процедуры разбиения. 
+	Подмассивы сортируются с помощью рекурсивного вызова процедуры быстрой сортировки. 
+	Поскольку подмассивы сортируются на месте, для их объединения не трубуются никакие действия.
 	
 	
-	for i in range(m2):
-		for j in range(0, n2 - n2Mod2, 2):
-			mulV[i] += matrix2[j][i] * matrix2[j + 1][i];
-\end{lstlisting}
-
-	\item накопление результата в буфер, а вне цикла сброс буфера в ячейку матрицы;
-	\begin{lstlisting}[label=some-code,caption=Оптимизации алгоритма Винограда №3]
-	for i in range(n1):
-		for j in range(m2):
-			buff = -(mulH[i] + mulV[j])
-			for k in range(0, m1 - m1Mod2, 2):
-				buff += (matrix1[i][k + 1] + matrix2[k][j]) * (matrix1[i][k] + matrix2[k + 1][j]);
-			result[i][j] = buff;
-\end{lstlisting}
-
-\end{enumerate}
-
-
-
-
-\chapter{Исследовательская часть}
-
-\section{Сравнительный анализ на основе замеров времени работы алгоритмов}
-
-Был проведен замер времени работы каждого из алгоритмов.\\
-Первый эксперимент производится для лучшего случая на матрицах с размерами от 100 x 100 до 1000 x 1000 c шагом 100. \\
-
-
-\begin{tikzpicture}
-
-\begin{axis}[
-    	axis lines = left,
-    	xlabel={Размер матрицы},
-    	ylabel={Время (тики)},
-    	xmin=100, xmax=1000,
-    	ymin=0, ymax=300000000,
-	legend pos=north west,
-	ymajorgrids=true
-]
-\addplot[color=red, mark=square] table[x index=0, y index=1] {LevR.dat}; 
-\addplot[color=green, mark=square] table[x index=0, y index=1] {DamLevR.dat};
-\addplot[color=blue, mark=square] table[x index=0, y index=1] {LevT.dat};
-
-\addlegendentry{Стандартный}
-\addlegendentry{Оптимизированный алг.}
-\addlegendentry{Алг. Винограда}
-\end{axis}
-\end{tikzpicture}
-
-\begin{center}
-  	Рисунок 4.1. График времени работы алгоритмов на матрицах четной размерности
+	\chapter{Конструкторская часть}
+	\section{Схемы алгоритмов}
+	В данном разделе будут рассмотрены схемы алгоритмов гномьей сортировки (\ref{ris:imageSB}), сортировки вставками (\ref{ris:imageSI}), быстрой сортировки (\ref{ris:imageSQ}).
+	
+	\newpage
+	\begin{figure}[h]
+		\includegraphics[width=1\linewidth]{gnome.png}
+		\caption{Схема алгоритма гномьей сортировки}
+		\label{ris:imageSB}
+	\end{figure}
+	
+	\newpage
+	\begin{figure}[h]
+		\includegraphics[width=1\linewidth]{insert.png}
+		\caption{Схема алгоритма сортировки вставками}
+		\label{ris:imageSI}
+	\end{figure}
+	
+	\newpage
+	\begin{figure}[h]
+		\includegraphics[scale=0.5]{quick.png}
+		\caption{Схема алгоритма быстрой сортировки}
+		\label{ris:imageSQ}
+	\end{figure}
+	
+	\newpage
+	\begin{figure}[h]
+		\includegraphics[scale=0.5]{partition.png}
+		\caption{Схема функции partition}
+		\label{ris:imageSP}
+	\end{figure}
+	
+	
+	\section{Трудоемкость алгоритмов}
+	Введем модель трудоемкости для оценки алгоритмов:
+	\begin{enumerate}
+		\item  базовые операции стоимостью 1 — +, -, *, /, =, ==, <=, >=, !=, +=, [], получение полей класса
+		\item оценка трудоемкости цикла: Fц = a + N*(a + Fтела), где a - условие цикла
+		\item стоимость условного перехода возьмем за 0, стоимость вычисления условия остаётся.
+	\end{enumerate}
+	
+	Далее будет приведены оценки трудоемкости алгоритмов. Построчная оценка трудоемкости гномьей сортировки (Табл. 2.1).
+	
+	\subsection{Гномья сортировка}
+	\begin{center}
+		Табл. 2.1 Построчная оценка веса
+		\begin{tabular}{|l c|} 
+			\hline
+			Код & Вес \\ [0.5ex] 
+			\hline\hline
+			int i = 0; & 1\\
+			\hline
+			while (i < len(arr)) & 2\\
+			\hline
+			if not i or arr[i - 1] <= arr[i]: & 2\\
+			\hline
+			else : & 1\\
+			\hline
+			arr[i], arr[i - 1] = arr[i - 1] , arr[i] & 2 + 3\\
+			\hline
+			i -= 1 & 1\\
+			\hline
+		\end{tabular}
 	\end{center}
 	
-Второй эксперимент производится для худшего случая, когда поданы матрицы с нечетными размерами от 101 x 101 до 1001 x 1001 c шагом 100. \\
-
-
-\begin{tikzpicture}
-
-\begin{axis}[
-    	axis lines = left,
-    	xlabel={Размер матрицы},
-    	ylabel={Время (тики)},
-    	xmin=100, xmax=1000,
-    	ymin=0, ymax=300000000,
-	legend pos=north west,
-	ymajorgrids=true
-]
-\addplot[color=red, mark=square] table[x index=0, y index=1] {LevR1.dat}; 
-\addplot[color=green, mark=square] table[x index=0, y index=1] {DamLevR1.dat};
-\addplot[color=blue, mark=square] table[x index=0, y index=1] {LevT1.dat};
-
-\addlegendentry{Стандартный}
-\addlegendentry{Оптимизированный алг.}
-\addlegendentry{Алг. Винограда}
-\end{axis}
-\end{tikzpicture}
-
-\begin{center}
-  	Рисунок 4.2. График времени работы алгоритмов на матрицах нечетной размерности
+	
+	\textbf{Лучший случай:} Массив отсортирован; не произошло ни одного обмена за 1 проход -> выходим из цикла \newline
+	Трудоемкость:  $1 + 1 + n* (2 + 7 + 1 + 3 ) + 2 = 13n + 4 = O(n)$
+	
+	\textbf{Худший случай:}  Массив отсортирован в обратном порядке; в каждом случае происходил обмен\newline
+	Трудоемкость: $1 + 1 +  n*(n* (7 + 5 + 1  + 3)  + 1 + 1) + 2 =  n*(16n + 2) + 4 = 16n^2 + 2n + 4 = O(n^2)$
+	
+	
+	\subsection{Сортировка вставками}
+	\hspace*{5mm}
+	\textbf{Лучший случай:} отсортированный массив. При этом все внутренние циклы состоят всего из одной итерации.\newline
+	Трудоемкость: $T(n) = 3n + ((2 + 2 + 4 + 2 ) * (n - 1))  =  3n + 10(n-1) = 13n - 10 = O(n)$
+	
+	\textbf{Худший случай:} массив отсортирован в обратном нужному порядке. Каждый новый элемент сравнивается со всеми в отсортированной последовательности.
+	Все внутренние циклы будут состоять из j итераций. \newline
+	Трудоемкость: $T(n) = 3n + (2 + 2)(n-1) + 4 \left({\frac {n(n+1)}{2}}-1\right)+5{\frac {n(n-1)}{2}}+3(n-1) = 3n + 4n - 4 + 2n^2
+	+ 2n - 4 + 2.5n^2 - 2.5n + 3n - 3 = 4.5n^2 + 9.5n - 11 = O(n^{2})$
+	
+	\subsection{Быстрая сортировка}
+	\hspace*{5mm}
+	\textbf{Лучший случай:} сбалансированное дерево вызовов \(O(n*log(n))\)  
+	В наиболее благоприятном случае процедура PARTITION приводит к двум подзадачам, размер каждой из которых не превышает $\frac{n}{2}$, поскольку размер одной из них равен $\frac{n}{2}$ , а второй$\frac{n}{2} - 1$. В такой ситуации быстрая сортировка работает намного производительнее, и время ее работы описывается следующим рекуррентным соотношением: $T(n) = 2T(\frac{n}{2}) + O(n)$,где мы не обращаем внимания на неточность, связанную с игнорированием функций “пол” и “потолок”, и вычитанием 1. Это рекуррентное соотношение имеет решение ; $T(n) =O(nlgn)$. При сбалансированности двух частей разбиения на каждом уровне рекурсии мы получаем асимптотически более быстрый алгоритм.
+	
+	Фактически любое разбиение, характеризующееся конечной константой пропорциональности, приводит к образованию дерева рекурсии высотой $O(lgn)$ со стоимостью каждого уровня, равной $O(n)$. Следовательно, прилюбой постоянной пропорции разбиения полное время работы быстрой сортировки составляет $O(nlgn)$.
+	
+	\textbf{Худший случай:} несбалансированное дерево $O(n^2)$
+	Поскольку рекурсивный вызов процедуры разбиения, на вход которой подается массив размером 0, приводит к немедленному возврату из этой процедуры без выполнения каких-ли-бо операций, $T(0) = O(1)$. Таким образом, рекуррентное соотношение, описывающее время работы процедуры в указанном случае, записывается следующим образом: 
+	$T(n) =T(n-1) +T(0) + O(n) =T(n-1) + O(n)$. Интуитивно понятно, что при суммировании промежутков времени, затрачиваемых на каждый уровень рекурсии, получается арифметическая прогрессия, что приводит к результату $O(n^2)$.
+	
+	\section{Вывод}
+	Гномья сортировка: лучший - $O(n)$, худший - $O(n^2)$ \newline
+	Сортировка вставками: лучший - $O(n)$, худший - $O(n^2)$ \newline
+	Быстрая сортировка: лучший - $O(nlgn)$, худший - $O(n^2)$ \newline
+	
+	При этом сортировка вставками быстрее гномьей с флагом в худшем случае т.к. имеет меньший коэффициент. Вставки $4.5n^2$, гномья сортировка $16n^2$.
+	
+	
+	\chapter{Технологическая часть}
+	\section{Выбор ЯП}
+	В качестве языка программирования был выбран C\#, а средой разработки Visual Studio.
+	Время работы алгоритмов было замерено с помощью класса Stopwatch.
+	
+	\section{Описание структуры ПО}
+	Ниже представлена IDEF0 диаграмма (\ref{ris:imageIDEF}), описывающая структуру программы.
+	\begin{figure}[h]
+		\caption{Функциональная схема сортировки массива (IDEF0 диаграмма 1 уровня)}
+		\label{ris:imageIDEF}
+	\end{figure}
+	
+	\section{Сведения о модулях программы}
+	Программа состоит из:
+	\begin{itemize}
+		\item Program.cs - главный файл программы, в котором располагается точка входа в программу и функция замера времени.
+		\item Sortiong.cs - файл класса sorting, в котором находятся алгоримы сортировки
+	\end{itemize}
+	
+	\section{Листинг кода}
+	\begin{lstlisting}[label=gnome,caption=Алгоритм гномьей сортировки]
+		def gnome_sort(arr):
+			i = 1
+			while i < len(arr):
+				if not i or arr[i - 1] <= arr[i]:
+					i += 1
+			else :
+				arr[i], arr[i - 1] = arr[i - 1] , arr[i]
+				i -= 1
+			return arr
+	\end{lstlisting}
+	\newpage
+	\begin{lstlisting}[label=insertion,caption=Алгоритм сортировки вставками]
+		def insertion_sort(arr):
+			for i in range(1, len(arr)):
+				key = arr[i]
+				j = i-1
+				while j >=0 and key < arr[j] :
+					arr[j+1] = arr[j]
+					j -= 1
+				arr[j+1] = key
+			return arr
+	\end{lstlisting}
+	
+	\begin{lstlisting}[label=quick,caption=Алгоритм быстрой сортировки]
+		def quick_sort(nums):  
+			def _quick_sort(items, low, high):
+				if low < high:
+					split_index = partition(items, low, high)
+					_quick_sort(items, low, split_index)
+					_quick_sort(items, split_index + 1, high)
+			_quick_sort(nums, 0, len(nums) - 1)
+	\end{lstlisting}
+	
+	\begin{lstlisting}[label=pivot,caption=Алгоритм поиска опорного элемента]
+		def partition(nums, low, high):
+			pivot = nums[(low + high) // 2]
+			i = low - 1
+			j = high + 1
+			while True:
+				i += 1
+				while nums[i] < pivot:
+					i += 1
+				j -= 1
+				while nums[j] > pivot:
+					j -= 1
+				if i >= j:
+					return j
+				nums[i], nums[j] = nums[j], nums[i]
+	\end{lstlisting}
+	
+	
+	\section{Вывод}
+	В данном разделе были представлены реализации алгоритмов гномьей сортировки, сортировки вставками и быстрой сортировки.
+	
+	\chapter{Исследовательская часть}
+	Был проведен замер времени работы каждого из алгоритмов.
+	
+	\section{Примеры работы программы}
+	\begin{figure}[h]
+		\center{\includegraphics[scale=0.3]{Test1}} 
+		\caption{Сортировка массива, заполненного случайными числами}
+		\label{ris:image}
+	\end{figure}
+	\newpage
+	\begin{figure}[h]
+		\center{\includegraphics[scale=0.3]{Test2}} 
+		\caption{Сортировка массива, заполненного случайными числами}
+		\label{ris:image}
+	\end{figure}
+	
+	\begin{figure}[h]
+		\center{\includegraphics[scale=0.3]{Test3}} 
+		\caption{Сортировка массива, заполненного одинаковыми числами}
+		\label{ris:image}
+	\end{figure}
+	\newpage
+	\begin{figure}[h]
+		\center{\includegraphics[scale=0.3]{Test4}} 
+		\caption{Сортировка пустого массива}
+		\label{ris:image}
+	\end{figure}
+	
+	\section{Эксперимент}
+	В рамках данного эксперимента было произведено сравнение времени выполнения трех алгоритмов в лучшем/худшем/случайном
+	случае заполения массива. При длине массивов от 100 до 1000 элементов с шагом 100. На предоставленных ниже графиках (Рис. 4.1), (Рис. 4.2), (Рис. 4.3)
+	по оси l идет длина массива, а по оси t - время сортировки в тиках.
+	
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = left,
+			xlabel = $l$,
+			ylabel = {$t$},
+			legend pos=north west,
+			ymajorgrids=true
+			]
+			\addplot[color=red, mark=square] table[x index=0, y index= 1] {BubbleAsc.txt}; 
+			\addplot[color=blue, mark=square] table[x index=0, y index= 1] {InsertionAsc.txt}; 
+			\addplot[color=green, mark=square] table[x index=0, y index= 1] {QuickAsc.txt}; 
+			
+			\addlegendentry{GnomeSort}
+			\addlegendentry{InsertionSort}
+			\addlegendentry{QuickSort}
+		\end{axis}
+	\end{tikzpicture}
+	\begin{center}
+		Pис. 4.1: Сравнение времени в лучшем случае
 	\end{center}
-
-
-\par
-По результатам тестирования все рассматриваемые алгоритмы реализованы правильно. Самым медленным алгоритмом оказался алгоритм классического умножения матриц, а самым быстрым — оптимизированный алгоритм Винограда.
-
-\section{Тестовые данные}
-
-Проверка работы алгоритмов на примерах:
-\begin{itemize}
-	\item матрицы размерностью 1 на 1
-	\item матрицы размерностью 2 на 2
-	\item матрицы размерностью 3 на 3
-\end{itemize}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1\linewidth]{matrix11.png}
-\caption{Пример работы алгоритма с матрицами размерностью 1 на 1}
-\label{fig:mpr}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1\linewidth]{matrix22.png}
-\caption{Пример работы алгоритма с матрицами размерностью 2 на 2}
-\label{fig:mpr}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1\linewidth]{matrix33.png}
-\caption{Пример работы алгоритма с матрицами размерностью 3 на 3}
-\label{fig:mpr}
-\end{figure}
-
-
-
-
-
-\chapter*{Заключение}
-\addcontentsline{toc}{chapter}{Заключение}
-В ходе лабораторной работы были изучены алгоритмы умножения матриц: стандартный и алгоритм Винограда, оптимизирован алгоритм Винограда, дана теоретическая оценка базового алгоритма умножения матриц, алгоритма Винограда и улучшенного алгоритма Винограда, реализованы три алгоритма умножения матриц.
-
-
-
-\chapter*{Список использованных источников}
-\addcontentsline{toc}{chapter}{Список литературы}
-\begin{enumerate}
-	\item Алгоритм Копперсмита - Винограда [Электронный ресурс]. – Режим доступа: https://math.wikia.org/ru/wiki/Алгоритм-Копперсмита-Винограда. – Дата доступа: 16.10.2020.
-	\item Алгоритм Штрассена - Винограда [Электронный ресурс]. – Режим доступа: http://wikiredia.ru/wiki/Алгоритм-Винограда-Штрассена. – Дата доступа: 16.10.2020.
-	\item Умножение матриц. Эффективная реализация шаг за шагом [Электронный ресурс]. – Режим доступа: https://habr.com/ru/post/359272/. – Дата доступа: 16.10.2020.
-\end{enumerate}
-
-
+	
+	
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = left,
+			xlabel = $l$,
+			ylabel = {$t$},
+			legend pos=north west,
+			ymajorgrids=true
+			]
+			\addplot[color=red, mark=square] table[x index=0, y index= 1] {BubbleDec.txt}; 
+			\addplot[color=blue, mark=square] table[x index=0, y index= 1] {InsertionDec.txt}; 
+			\addplot[color=green, mark=square] table[x index=0, y index= 1] {QuickSame.txt}; 
+			
+			\addlegendentry{GnomeSort}
+			\addlegendentry{InsertionSort}
+			\addlegendentry{QuickSort}
+		\end{axis}
+	\end{tikzpicture}
+	\begin{center}
+		Pис. 4.2: Сравнение времени в худшем случае
+	\end{center}
+	
+	
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = left,
+			xlabel = $l$,
+			ylabel = {$t$},
+			legend pos=north west,
+			ymajorgrids=true
+			]
+			\addplot[color=red, mark=square] table[x index=0, y index= 1] {BubbleRnd.txt}; 
+			\addplot[color=blue, mark=square] table[x index=0, y index= 1] {InsertionRnd.txt}; 
+			\addplot[color=green, mark=square] table[x index=0, y index= 1] {QuickRnd.txt}; 
+			
+			\addlegendentry{GnomeSort}
+			\addlegendentry{InsertionSort}
+			\addlegendentry{QuickSort}
+		\end{axis}
+	\end{tikzpicture}
+	\begin{center}
+		Pис. 4.3: Сравнение времени при случайном заполнении массива
+	\end{center}
+	
+	\section{Вывод}
+	По результатам тестирования выявлено, что все рассматриваемые алгоритмы реализованы правильно. Самым быстрым алгоритмом, при использовании случайного заполнения, оказался алгоритм быстрой сортировки, а самым медленным — алгоритм гномьей сортировки.
+	
+	\chapter*{Заключение}
+	\addcontentsline{toc}{chapter}{Заключение}
+	В ходе работы были изучены алгоритмы сортировки массива: гномья, вставки, быстрая сортировка. Выполнено сравнение всех рассматриваемых алгоритмов. В ходе исследования был найден оптимальный алгоритм. Изучены зависимости выполнения алгоритмов от длины массива. Также реализован программный код продукта.
+	
+	
+	\chapter*{Список литературы}
+	\addcontentsline{toc}{chapter}{Список литературы}
+	\begin{enumerate}
+		\item Кормен Т. Алгоритмы: построение и анализ [Текст] / Кормен Т. - Вильямс, 2014. - 198 с. - 219 с.
+	\end{enumerate}
 
 \end{document}
