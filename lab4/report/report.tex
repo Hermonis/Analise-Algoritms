@@ -1,0 +1,524 @@
+\documentclass[a4paper,14pt]{extreport}
+
+\usepackage{cmap} % Улучшенный поиск русских слов в полученном pdf-файле
+\usepackage[T2A]{fontenc} % Поддержка русских букв
+\usepackage[utf8]{inputenc} % Кодировка utf8
+\usepackage[english,russian]{babel} % Языки: русский, английский
+%\usepackage{pscyr} % Нормальные шрифты
+
+\usepackage{amsmath}
+
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=15mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalsize\bfseries}
+{\thesection}
+{1em}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{8pt}
+\titlespacing*{\section}{\parindent}{*4}{*4}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+
+\usepackage{setspace}
+\onehalfspacing % Полуторный интервал
+
+\frenchspacing
+\usepackage{indentfirst} % Красная строка
+
+\usepackage{titlesec}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{20pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{20pt}{\Large\bfseries}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+\lstdefinestyle{cpp}{
+	language=C++,
+	backgroundcolor=\color{white},
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{gray},
+	directivestyle=\color{orange}
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=1,
+	numbersep=5pt,
+	frame=single,
+	tabsize=8,
+	captionpos=b,
+	breaklines=true,
+	breakatwhitespace=true,
+	escapeinside={\#*}{*)},
+	morecomment=[l][\color{magenta}]{\#},
+	columns=fullflexible
+}
+
+\usepackage{pgfplots}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+
+\usepackage{graphicx}
+\newcommand{\img}[3] {
+	\begin{figure}[h]
+		\center{\includegraphics[height=#1]{inc/img/#2}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\boximg}[3] {
+	\begin{figure}[h]
+		\center{\fbox{\includegraphics[height=#1]{inc/img/#2}}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\imgext}[4] {
+	\begin{figure}[h!]
+		\center{\includegraphics[#1]{inc/img/#2.#3}}
+		\caption{#4}
+		\label{img:#2}
+	\end{figure}
+}
+
+\usepackage[justification=centering]{caption} % Настройка подписей float объектов
+
+\usepackage[unicode,pdftex]{hyperref} % Ссылки в pdf
+\hypersetup{hidelinks}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\usepackage{icomma} % Интеллектуальные запятые для десятичных чисел
+
+\usepackage{csvsimple}
+
+\usepackage{svg}
+
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	
+	{\footnotesize\itshape Министерство науки и высшего образования
+		Российской Федерации Федеральное государственное бюджетное
+		образовательное учреждение высшего образования «Московский
+		государственный технический университет имени Н.~Э.~Баумана
+		(национальный исследовательский университет)» (МГТУ им. Н.~Э.~Баумана)
+		\\}
+	
+	\vspace{60mm}
+	
+	\textbf{ОТЧЕТ}\\
+	По лабораторной работе №4\\
+	По курсу: «Анализ алгоритмов»\\
+	Тема: «Параллельная реализация алгоритма Копперсмита — Винограда»\\
+	
+	\vspace{60mm}
+	
+	\hspace{70mm} Студент:\hfill Козаченко~А.~А.\\
+	\hspace{70mm} Группа: \hfill ИУ7-54Б\\
+	%\vspace{5mm}
+	\hspace{70mm} Преподаватели:\hfill Волкова~Л.~Л.,\\
+	\hfill Строганов~Ю.~В.\\
+	
+	\vfill
+	Москва, 2020
+\end{titlepage}
+
+\tableofcontents
+
+\chapter*{Введение}
+\addcontentsline{toc}{chapter}{Введение}
+
+Многопоточность — способность центрального процессора (CPU) или одного ядра в многоядерном процессоре одновременно выполнять несколько процессов или потоков, соответствующим образом поддерживаемых операционной системой.
+Этот подход отличается от многопроцессорности, так как многопоточность процессов и потоков совместно использует ресурсы одного или нескольких ядер: вычислительных блоков, кэш-памяти ЦПУ или буфера перевода с преобразованием (TLB).
+
+В тех случаях, когда многопроцессорные системы включают в себя несколько полных блоков обработки, многопоточность направлена на максимизацию использования ресурсов одного ядра, используя параллелизм на уровне потоков, а также на уровне инструкций.
+Поскольку эти два метода являются взаимодополняющими, их иногда объединяют в системах с несколькими многопоточными ЦП и в ЦП с несколькими многопоточными ядрами.
+
+Многопоточная парадигма стала более популярной с конца 1990-х годов, поскольку усилия по дальнейшему использованию параллелизма на уровне инструкций застопорились.
+Смысл многопоточности — квазимногозадачность на уровне одного исполняемого процесса.
+Значит, все потоки процесса помимо общего адресного пространства имеют и общие дескрипторы файлов. Выполняющийся процесс имеет как минимум один (главный) поток.
+
+Многопоточность (как доктрину программирования) не следует путать ни с многозадачностью, ни с многопроцессорностью, несмотря на то, что операционные системы, реализующие многозадачность, как правило, реализуют и многопоточность.
+
+Достоинства:
+\begin{itemize}
+	\item облегчение программы посредством использования общего адресного пространства.
+	\item меньшие затраты на создание потока в сравнении с процессами.
+	\item повышение производительности процесса за счёт распараллеливания процессорных вычислений.
+	\item если поток часто теряет кэш, другие потоки могут продолжать использовать неиспользованные вычислительные ресурсы.
+\end{itemize}
+
+Недостатки:
+\begin{itemize}
+	\item несколько потоков могут вмешиваться друг в друга при совместном использовании аппаратных ресурсов \cite{Nemirovsky};
+	\item с программной точки зрения аппаратная поддержка многопоточности более трудоемка для программного обеспечения \cite{Olukotun};
+	\item проблема планирования потоков;
+	\item специфика использования. Вручную настроенные программы на ассемблере, использующие расширения MMX или AltiVec и выполняющие предварительные выборки данных, не страдают от потерь кэша или неиспользуемых вычислительных ресурсов. Таким образом, такие программы не выигрывают от аппаратной многопоточности и действительно могут видеть ухудшенную производительность из-за конкуренции за общие ресурсы \cite{intel}.
+\end{itemize}
+Несмотря на существующие недостатки, многопоточная парадигма имеет огромный потенциал, поэтому данная лабораторная работа будет посвящена распараллеливанию реализованного ранее алгоритма Винограда для умножения матриц.\\
+
+\section*{Задачи работы}
+
+В рамках выполнения работы необходимо решить следующие задачи:
+\begin{itemize}
+	\item изучить понятие параллельный вычислений;
+	\item реализовать последовательный и параллельный алгоритм Винограда;
+	\item сравнить временные характеристики реализованных алгоритмов экспериментально;
+	\item на основании проделанной работы сделать выводы.
+\end{itemize}
+
+
+\chapter{Аналитическая часть}
+
+\section{Описание задачи}
+
+
+Пусть даны две прямоугольные матрицы
+\begin{equation}
+	A_{lm} = \begin{pmatrix}
+		a_{11} & a_{12} & \ldots & a_{1m}\\
+		a_{21} & a_{22} & \ldots & a_{2m}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		a_{l1} & a_{l2} & \ldots & a_{lm}
+	\end{pmatrix},
+	\quad
+	B_{mn} = \begin{pmatrix}
+		b_{11} & b_{12} & \ldots & b_{1n}\\
+		b_{21} & b_{22} & \ldots & b_{2n}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		b_{m1} & b_{m2} & \ldots & b_{mn}
+	\end{pmatrix},
+\end{equation}
+
+тогда матрица $C$
+\begin{equation}
+	C_{ln} = \begin{pmatrix}
+		c_{11} & c_{12} & \ldots & c_{1n}\\
+		c_{21} & c_{22} & \ldots & c_{2n}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		c_{l1} & c_{l2} & \ldots & c_{ln}
+	\end{pmatrix},
+\end{equation}
+
+где
+\begin{equation}
+	\label{eq:M}
+	c_{ij} =
+	\sum_{r=1}^{m} a_{ir}b_{rj} \quad (i=\overline{1,l}; j=\overline{1,n})
+\end{equation}
+
+будет называться произведением матриц $A$ и $B$ \cite{Cohn}.
+
+Рассматривая результат умножения двух матриц, очевидно, что каждый элемент в нем представляет собой скалярное произведение соответствующих строки и столбца исходных матриц.
+Такое умножение допускает предварительную обработку, позволяющую часть работы выполнить заранее \cite{Coppersmith}.
+
+Рассмотрим два вектора $V = (v_1, v_2, v_3, v_4)$ и $W = (w_1, w_2, w_3, w_4)$.
+Их скалярное произведение равно: $V\cdot W = v_1w_1 + v_2w_2 + v_3w_3 + v_4w_4,$, что эквивалентно
+\begin{equation}
+	V\cdot W = (v_1 + w_2)(v_2 + w_1) + (v_3 + w_4)(v_4 + w_3) - v_1v_2 - v_3v_4 - w_1w_2 - w_3w_4.
+\end{equation}
+
+Несмотря на то, что второе выражение требует вычисления большего количества операций, чем стандартный алгоритм: вместо четырех умножений - шесть, а вместо трех сложений - десять, выражение в правой части последнего равенства допускает предварительную обработку: его части можно вычислить заранее и запомнить для каждой строки первой матрицы и для каждого столбца второй, то для каждого элемента будет необходимо выполнить лишь первые два умножения и последующие пять сложений, а также дополнительно два сложения.
+Из-за того, что операция сложения быстрее операции умножения, алгоритм должен работать быстрее стандартного \cite{Pogorelov}.
+
+В данной лабораторной работе стоит задача распараллеливания алгоритма Винограда.
+Так как каждый элемент матрицы $C$ вычисляется независимо от других и матрицы $A$ и $B$ не изменяются, то для того, чтобы вычислить произведение параллельно, достаточно просто указать, какие элементы $C$ какому потоку вычислять.
+
+
+\section*{Вывод}
+В лабораторной работе стоит задача реализации многопоточной версии алгоритма Копперсмита — Винограда.
+Необходимо сравнить её с однопоточной версией.
+
+
+\chapter{Конструкторская часть}
+
+\section{Разработка алгоритмов}
+
+\subsection{Алгоритм Копперсмита — Винограда}
+
+На рисунке \ref{img:winograd} представлена схема улучшенного алгоритма Копперсмита — Винограда.
+
+\imgext{width=165mm}{winograd}{pdf}{Схема улучшенного алгоритма Копперсмита — Винограда}
+
+\subsection{Параллельная реализация алгоритма Копперсмита — Винограда}
+
+Рассмотрим способы распараллеливания алгоритма.
+\begin{itemize}
+	\item Прежде всего предварительные вычисления MH и MV не зависят друг от друга, значит, их можно вычислить параллельно;
+	\item Если количество потоков больше 2-х, то вычисления и MH, и MV можно распараллеть, выделив каждому из \code{n\_threads/2} потоков, где \code{n\_threads} - кол-во доступных потоков, вычисление своего участка длинной \code{l/n\_threads} и \code{n/n\_threads} соответственно;
+	\item Аналогичным способом распараллеливается вычисление матрицы.
+\end{itemize}
+
+Подсчёты для каждой строки (циклы i на рисунке \ref{img:winograd}) выполняются независимо, а значит их можно распараллелить, выполняя цикл не от 0 до условного \code{R}, а поделив \code{R} на \code{n\_threads} частей.
+Схема распараллеливания цикла приведена на рисунке \ref{img:parallelize}
+
+\imgext{height=200mm}{parallelize}{pdf}{Схема распараллеливания процедуры $p$}
+
+\section*{Вывод}
+
+На основе теоретических данных, полученных из аналитического раздела, была построена схема алгоритма Копперсмита — Винограда и приведены способы его распараллелить.
+
+
+\chapter{Технологическая часть}
+
+В данном разделе приведены средства реализации и листинг кода.
+
+\section{Средства реализации}
+
+В качестве языка программирования для реализации данной лабораторной работы был выбран высокопроизводительный язык C++ \cite{cpp17}, так как он предоставляет широкие возможности для эффективной реализации алгоритмов.
+Для распараллеливания алгоритма используется \code{std::thread} из стандартной библиотеки.
+
+Для генерации псевдослучайных чисел использована функция из листинга \ref{lst:dont_try_to_guess}.
+
+Для замера времени работы алгоритма использованы точнейшие функции библиотеки \code{std::chrono}
+
+\section{Листинг кода}
+
+В листингах \ref{lst:single-winograd} и \ref{lst:multi-winograd} приведены однопоточная и многопоточная реализации алгоритмов Копперсмита — Винограда.
+Функция замера времени работы алгоритма приведена в листинге \ref{lst:count_time}.
+
+\begin{lstinputlisting}[
+	caption={Последовательный алгоритм Копперсмита — Винограда},
+	label={lst:single-winograd},
+	style={cpp},
+	linerange={5-67}
+	]{../matrix/matrix.cpp}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Параллельный алгоритм Копперсмита — Винограда},
+	label={lst:multi-winograd},
+	style={cpp},
+	linerange={69-167}
+	]{../matrix/matrix.cpp}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Продвинутый генератор псевдослучайных чисел},
+	label={lst:dont_try_to_guess},
+	style={cpp},
+	linerange={8-12}
+	]{../performance_test.cpp}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Функция замера времени работы алгоритмов},
+	label={lst:count_time},
+	style={cpp},
+	linerange={26-36}
+	]{../performance_test.cpp}
+\end{lstinputlisting}
+
+\section{Тестирование функций}
+
+В таблице~\ref{tabular:test_rec} приведены тесты для функций, реализующих однопоточный и многопоточный алгоритмы Копперсмита — Винограда. Тесты пройдены успешно.
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{c@{\hspace{7mm}}c@{\hspace{7mm}}c@{\hspace{7mm}}c@{\hspace{7mm}}c@{\hspace{7mm}}c@{\hspace{7mm}}}
+			\hline
+			Матрица 1 & Матрица 2 &Ожидаемый результат \\ \hline
+			\vspace{4mm}
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				1 & 2 & 3\\
+				1 & 2 & 3
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 2 & 3\\
+				1 & 2 & 3\\
+				1 & 2 & 3
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				6 & 12 & 18\\
+				6 & 12 & 18\\
+				6 & 12 & 18
+			\end{pmatrix}$ \\
+			\vspace{2mm}
+			\vspace{2mm}
+			$\begin{pmatrix}
+				1 & 2\\
+				1 & 2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 2\\
+				1 & 2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				3 & 6\\
+				3 & 6
+			\end{pmatrix}$ \\
+			\vspace{2mm}
+			\vspace{2mm}
+			$\begin{pmatrix}
+				2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				4
+			\end{pmatrix}$ \\
+			\vspace{2mm}
+			\vspace{2mm}
+			$\begin{pmatrix}
+				1 & -2 & 3\\
+				1 & 2 & 3\\
+				1 & 2 & 3
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				-1 & 2 & 3\\
+				1 & 2 & 3\\
+				1 & 2 & 3
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				0 & 4 & 6\\
+				4 & 12 & 18\\
+				4 & 12 & 18
+			\end{pmatrix}$\\
+			\vspace{2mm}
+			\vspace{2mm}
+			$\begin{pmatrix}
+				1 & 2
+			\end{pmatrix}$ &
+			$\begin{pmatrix}
+				1 & 2
+			\end{pmatrix}$ &
+			Не могут быть перемножены\\
+		\end{tabular}
+	\end{center}
+	\caption{\label{tabular:test_rec} Тестирование функций}
+\end{table}
+
+\section*{Вывод}
+
+Правильный выбор инструментов разработки позволил эффективно реализовать алгоритмы, настроить модульное тестирование и выполнить исследовательский раздел лабораторной работы.
+
+
+\chapter{Исследовательская часть}
+
+\section{Технические характеристики}
+
+\begin{itemize}
+	\item Операционная система: Ubuntu 19.10 64-bit.
+	\item Память: 3,8 GiB.
+	\item Процессор: Intel® Core™ i3-6006U CPU @ 2.00GHz c 2 физическими и 4 логическими ядрами
+\end{itemize}
+
+\section{Время выполнения алгоритмов}
+
+Алгоритмы тестировались c помощью функции замера процессорного времени \code{std::chrono::high\_resolution\_clock::now()}.
+Чтобы уменьшить случайные отклонения в измерениях, время считалось среднее для 5 запусков функций.
+
+Результаты замеров приведены в таблицах \ref{tbl:runtime_even} и \ref{tbl:runtime_odd}.
+На рисунках \ref{plt:runtime_even} и \ref{plt:runtime_odd} приведены графики зависимостей времени работы алгоритмов от размеров матриц на различном количестве потоков.
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			& \multicolumn{7}{c|}{\bfseries Время при кол-ве потоков, мс}                                        \\ \cline{2-8}
+			\bfseries Размер & \bfseries 1 & \bfseries 2 & \bfseries 4 & \bfseries 8 & \bfseries 16 & \bfseries 32 & \bfseries 64
+			\csvreader{inc/csv/runtime-even.csv}{}
+			{\\\hline \csvcoli&\csvcolii&\csvcoliii&\csvcoliv&\csvcolv&\csvcolvi&\csvcolvii&\csvcolviii}
+			\\\hline
+		\end{tabular}
+	\end{center}
+	\caption{Время работы алгоритмов при чётных размерах матриц}
+	\label{tbl:runtime_even}
+\end{table}
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			& \multicolumn{7}{c|}{\bfseries Время при кол-ве потоков, мс}                                        \\ \cline{2-8}
+			\bfseries Размер & \bfseries 1 & \bfseries 2 & \bfseries 4 & \bfseries 8 & \bfseries 16 & \bfseries 32 & \bfseries 64
+			\csvreader{inc/csv/runtime-odd.csv}{}
+			{\\\hline \csvcoli&\csvcolii&\csvcoliii&\csvcoliv&\csvcolv&\csvcolvi&\csvcolvii&\csvcolviii}
+			\\\hline
+		\end{tabular}
+	\end{center}
+	\caption{Время работы алгоритмов при нечётных размерах матриц}
+	\label{tbl:runtime_odd}
+\end{table}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\begin{axis}[
+			axis lines=left,
+			xlabel=Размер,
+			ylabel={Время, мс},
+			legend pos=north west,
+			ymajorgrids=true
+			]
+			\addplot table[x=size,y=thread1,col sep=comma]{inc/csv/runtime-even.csv};
+			\addplot table[x=size,y=thread2,col sep=comma]{inc/csv/runtime-even.csv};
+			\addplot table[x=size,y=thread4,col sep=comma]{inc/csv/runtime-even.csv};
+			\addplot table[x=size,y=thread8,col sep=comma]{inc/csv/runtime-even.csv};
+			\addplot table[x=size,y=thread16,col sep=comma]{inc/csv/runtime-even.csv};
+			\addplot table[x=size,y=thread32,col sep=comma]{inc/csv/runtime-even.csv};
+			\addplot table[x=size,y=thread64,col sep=comma]{inc/csv/runtime-even.csv};
+			\legend{1 поток, 2 потока, 4 потока, 8 потоков, 16 потоков, 32 потока, 64 потока}
+		\end{axis}
+	\end{tikzpicture}
+	\captionsetup{justification=centering}
+	\caption{Зависимость времени работы алгоритма от размера квадратной матрицы (чётного)}
+	\label{plt:runtime_even}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\begin{axis}[
+			axis lines=left,
+			xlabel=Размер,
+			ylabel={Время, мс},
+			legend pos=north west,
+			ymajorgrids=true
+			]
+			\addplot table[x=size,y=thread1,col sep=comma]{inc/csv/runtime-odd.csv};
+			\addplot table[x=size,y=thread2,col sep=comma]{inc/csv/runtime-odd.csv};
+			\addplot table[x=size,y=thread4,col sep=comma]{inc/csv/runtime-odd.csv};
+			\addplot table[x=size,y=thread8,col sep=comma]{inc/csv/runtime-odd.csv};
+			\addplot table[x=size,y=thread16,col sep=comma]{inc/csv/runtime-odd.csv};
+			\addplot table[x=size,y=thread32,col sep=comma]{inc/csv/runtime-odd.csv};
+			\addplot table[x=size,y=thread64,col sep=comma]{inc/csv/runtime-odd.csv};
+			\legend{1 поток, 2 потока, 4 потока, 8 потоков, 16 потоков, 32 потока, 64 потока}
+		\end{axis}
+	\end{tikzpicture}
+	\captionsetup{justification=centering}
+	\caption{Зависимость времени работы алгоритма от размера квадратной матрицы (нечётного)}
+	\label{plt:runtime_odd}
+\end{figure}
+
+\section*{Вывод}
+
+Наилучшее время алгоритм показал на 4 потоках, соответствующих количеству логических ядер, уменьшив время однопоточной реализации в $2,3$ раза.
+Большее количество потоков в итоге немногим замедляет время необходимостью переключения контекста.
+
+
+\chapter*{Заключение}
+\addcontentsline{toc}{chapter}{Заключение}
+
+В рамках лабораторной работы было изучено понятие параллельных вычислений.
+Реализована параллельная версия алгоритма Винограда и произведены замеры времени её работы с различным количеством потоков.
+На основании этого произведено сравнение эффективности параллельной и последовательной версий алгоритма.
+Наиболее эффективной оказалась параллельная реализация алгоритма Винограда при количестве потоков, равном количеству логических ядер процессора, превосходящая время однопоточной реализации на $57 \%$.
+
+
+\addcontentsline{toc}{chapter}{Литература}
+\bibliographystyle{utf8gost705u}  % стилевой файл для оформления по ГОСТу
+\bibliography{51-biblio}          % имя библиографической базы (bib-файла)
+
+
+\end{document}

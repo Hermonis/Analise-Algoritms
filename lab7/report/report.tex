@@ -1,0 +1,400 @@
+\documentclass[a4paper,14pt]{extreport}
+
+\usepackage{cmap} % Улучшенный поиск русских слов в полученном pdf-файле
+\usepackage[T2A]{fontenc} % Поддержка русских букв
+\usepackage[utf8]{inputenc} % Кодировка utf8
+\usepackage[english,russian]{babel} % Языки: русский, английский
+%\usepackage{pscyr} % Нормальные шрифты
+
+\usepackage{amsmath}
+
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=15mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalsize\bfseries}
+{\thesection}
+{1em}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{8pt}
+\titlespacing*{\section}{\parindent}{*4}{*4}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+
+\usepackage{setspace}
+\onehalfspacing % Полуторный интервал
+
+\frenchspacing
+\usepackage{indentfirst} % Красная строка
+
+\usepackage{titlesec}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{20pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{20pt}{\Large\bfseries}
+
+\usepackage{listings}
+\usepackage[table,xcdraw]{xcolor}
+
+
+\lstdefinestyle{cpp}{
+	language=C++,
+	backgroundcolor=\color{white},
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{gray},
+	directivestyle=\color{orange}
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=1,
+	numbersep=5pt,
+	frame=single,
+	tabsize=8,
+	captionpos=b,
+	breaklines=true,
+	breakatwhitespace=true,
+	escapeinside={\#*}{*)},
+	morecomment=[l][\color{magenta}]{\#},
+	columns=fullflexible
+}
+
+\usepackage{pgfplots}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+
+\usepackage{graphicx}
+\newcommand{\img}[3] {
+	\begin{figure}[h]
+		\center{\includegraphics[height=#1]{inc/img/#2}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\boximg}[3] {
+	\begin{figure}[h]
+		\center{\fbox{\includegraphics[height=#1]{inc/img/#2}}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\imgext}[4] {
+	\begin{figure}[h!]
+		\center{\includegraphics[#1]{inc/img/#2.#3}}
+		\caption{#4}
+		\label{img:#2}
+	\end{figure}
+}
+
+\usepackage[justification=centering]{caption} % Настройка подписей float объектов
+
+\usepackage[unicode,pdftex]{hyperref} % Ссылки в pdf
+\hypersetup{hidelinks}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\usepackage{icomma} % Интеллектуальные запятые для десятичных чисел
+
+\usepackage{csvsimple}
+
+\usepackage{svg}
+
+
+\begin{document}
+
+\tableofcontents
+
+\begin{titlepage}
+	\centering
+	
+	{\footnotesize\itshape Министерство науки и высшего образования
+		Российской Федерации Федеральное государственное бюджетное
+		образовательное учреждение высшего образования «Московский
+		государственный технический университет имени Н.~Э.~Баумана
+		(национальный исследовательский университет)» (МГТУ им. Н.~Э.~Баумана)
+		\\}
+	
+	\vspace{60mm}
+	
+	\textbf{ОТЧЕТ}\\
+	По лабораторной работе №7\\
+	По курсу: «Анализ алгоритмов»\\
+	Тема: «Алгоритмы поиска подстроки в строке»\\
+	
+	\vspace{60mm}
+	
+	\hspace{70mm} Студент:\hfill Козаченко~А.~А.\\
+	\hspace{70mm} Группа: \hfill ИУ7-54Б\\
+	%\vspace{5mm}
+	\hspace{70mm} Преподаватели:\hfill Волкова~Л.~Л.,\\
+	\hfill Строганов~Ю.~В.\\
+	
+	\vfill
+	Москва, 2020
+\end{titlepage}
+
+
+\chapter*{Введение}
+\addcontentsline{toc}{chapter}{Введение}
+
+Поиск подстроки в строке — одна из простейших задач поиска информации.
+Применяется в виде встроенной функции в текстовых редакторах, СУБД, поисковых машинах, языках программирования и т. п. \cite{Gusfield}
+
+\section*{Задачи работы}
+
+Цель лабораторной работы: изучить алгоритмы поиска подстроки в строке.
+
+В рамках выполнения работы необходимо решить следующие задачи:
+\begin{itemize}
+	\item изучить стандартный алгоритм, алгоритмы Кнута — Морриса — Пратта и Бойера — Мура;
+	\item реализовать данные алгоритмы;
+	\item привести подробное описание работы каждого алгоритма.
+\end{itemize}
+
+
+\chapter{Аналитическая часть}
+
+\section{Описание задачи}
+
+Пусть даны строки \textit{source} и \textit{pattern}, обозначим их \textit{s} и \textit{p} соответственно.
+Необходимо проверить, входит ли строка \textit{p} в \textit{s}, если да, то найти индекс первого вхождения.
+
+\section{Описание алгоритмов}
+
+\subsection{Стандартный алгоритм}
+
+Стандартный алгоритм основан на последовательном сравнении всех подстрок строки \textit{s} с \textit{p}, т. е. будет происходить сравнение всех подстрок размера $|p|$, начиная с индексов $i = 1,2,...,|s|-|p|+1$.
+
+Пусть $s= "abcabccba"$, $p = "cab"$.
+В таблице \ref{tbl:standard-analysis} показаны сравнения символов, выполняемые в ходе работы алгоритма.
+
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			№&a&b&c&a&b&c&c&b&a\\
+			\hline
+			1&c&a&b& & & & & &\\
+			\hline
+			2& &c&a&b& & & & &\\
+			\hline
+			3& & &c&a&b& & & &\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Сравнение символов в стандартном алгоритме}
+	\label{tbl:standard-analysis}
+\end{table}
+
+\subsection{Алгоритм Кнута — Морриса — Пратта}
+
+Алгоритм Кнута — Морриса — Пратта является оптимизацией стандартного алгоритма \cite{Smyth}.
+Необходимо дать определения префикса, суффикса и префикс-функции.
+
+Алгоритм был разработан Д. Кнутом и В. Праттом и, независимо от них, Д. Моррисом \cite{Kormen}.
+Результаты своей работы они опубликовали совместно в 1977 году \cite{Knuth}.
+
+После частичного совпадения начальной части подстроки $patters$ с соответствующими символами строки $source$ мы фактически знаем пройденную часть строки и может «вычислить» некоторые сведения (на основе самой подстроки $pattern$), с помощью которых потом быстро продвинемся по тексту.
+
+Идея КМП-поиска — при каждом несовпадении двух символов текста и образа образ сдвигается на самое длинное совпадение начала с концом префикса (не учитывая тривиальное совпадение самого с собой) \cite{Okulov}.
+
+Рассмотрим пример. Создается массив сдвигов, таблица \ref{tbl:kmp-shift-analysis}.
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{|c|c|c|l|l|l|}
+			\hline
+			0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+			a & b & c & a & b & d \\ \hline
+			0 & 0 & 0 & 1 & 2 & 0 \\ \hline
+		\end{tabular}
+	\end{center}
+	\caption{Массив сдвигов}
+	\label{tbl:kmp-shift-analysis}
+\end{table}
+
+В таблице \ref{tbl:kmp-example-analysis} представлена работа алгоритма.
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			cтрока    & a & b & c & a & b & e                         & a & b & c & a                         & b                         & c                         & a                         & b                         & d                         \\ \hline
+			подстрока & a & b & c & a & b & \cellcolor[HTML]{FE0000}d &   &   &   &                           &                           &                           &                           &                           &                           \\ \hline
+			подстрока &   &   &   & a & b & \cellcolor[HTML]{FE0000}c & a & b & d &                           &                           &                           &                           &                           &                           \\ \hline
+			подстрока &   &   &   &   &   & \cellcolor[HTML]{FE0000}a & b & c & a & b                         & d                         &                           &                           &                           &                           \\ \hline
+			подстрока &   &   &   &   &   &                           & a & b & c & a                         & b                         & \cellcolor[HTML]{FE0000}d &                           &                           &                           \\ \hline
+			подстрока &   &   &   &   &   &                           &   &   &   & \cellcolor[HTML]{34FF34}a & \cellcolor[HTML]{34FF34}b & \cellcolor[HTML]{34FF34}c & \cellcolor[HTML]{34FF34}a & \cellcolor[HTML]{34FF34}b & \cellcolor[HTML]{34FF34}d \\ \hline
+		\end{tabular}
+		\caption{Пример работы алгоритма КМП}
+		\label{tbl:kmp-example-analysis}
+	\end{center}
+\end{table}
+
+\subsection{Алгоритм Бойера — Мура}
+
+Алгоритм поиска строки Бойера — Мура считается наиболее быстрым среди алгоритмов общего назначения, предназначенных для поиска подстроки в строке.
+Был разработан Бойером и Муром в 1977 году \cite{Boyer}.
+Преимущество этого алгоритма в том, что ценой некоторого количества предварительных вычислений над шаблоном (но не над строкой, в которой ведётся поиск) шаблон сравнивается с исходным текстом не во всех позициях — часть проверок пропускаются как заведомо не дающие результата.
+
+Основная идея алгоритм — начать поиск не с начала, а с конца подстроки.
+Наткнувшись на несовпадение, мы просто смещаем подстроку до самого правого вхождения данного символа, не учитывая последний.
+
+Рассмотрим пример. Создаётся массив прыжков, таблица \ref{tbl:bm-shift-analysis}.
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{|c|c|c|l|l|l|}
+			\hline
+			a & b & c & a & b & d \\ \hline
+			2 & 1 & 3 & 2 & 1 & 6 \\ \hline
+		\end{tabular}
+	\end{center}
+	\caption{Массив прыжков}
+	\label{tbl:bm-shift-analysis}
+\end{table}
+
+В таблице \ref{tbl:bm-example-analysis} представлена работа алгоритма.
+
+\begin{table}[!h]
+	\begin{center}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			cтрока    & a & b & c & a & b & e                         & a & b & c & a                         & b                         & c                         & a                         & b                         & d                         \\ \hline
+			подстрока & a & b & c & a & b & \cellcolor[HTML]{FE0000}d &   &   &   &                           &                           &                           &                           &                           &                           \\ \hline
+			подстрока &   &   &   &   &   &                           & a & b & c & a                         & b                         & \cellcolor[HTML]{FE0000}d &                           &                           &                           \\ \hline
+			подстрока &   &   &   &   &   &                           &   &   &   & \cellcolor[HTML]{34FF34}a & \cellcolor[HTML]{34FF34}b & \cellcolor[HTML]{34FF34}c & \cellcolor[HTML]{34FF34}a & \cellcolor[HTML]{34FF34}b & \cellcolor[HTML]{34FF34}d \\ \hline
+		\end{tabular}
+	\end{center}
+	\caption{Пример работы алгоритма БМ}
+	\label{tbl:bm-example-analysis}
+\end{table}
+
+
+\section*{Вывод}
+
+В данной работе стоит задача реализации алгоритмов поиска подстроки в строке.
+
+
+\chapter{Конструкторская часть}
+
+\section{Разработка алгоритмов}
+
+На рисунках \ref{img:kmp} и \ref{img:bm} представлены схемы алгоритмов КМП и БМ соответсвенно.
+
+\imgext{height=170mm}{kmp}{pdf}{Схема алгоритма Кнута — Морриса — Пратта}
+
+\imgext{height=160mm}{bm}{pdf}{Схема алгоритма Бойера — Мура}
+
+\section*{Вывод}
+
+Были разработаны алгоритмов поиска подстроки в строке.
+
+
+\chapter{Технологическая часть}
+
+В данном разделе приведены средства реализации и листинг кода.
+
+\section{Средства реализации}
+
+В качестве языка программирования для реализации данной лабораторной работы был выбран высокопроизводительный язык C++ \cite{cpp17}, так как он предоставляет широкие возможности для эффективной реализации алгоритмов.
+
+\section{Листинг кода}
+
+В листингах \ref{lst:standard}, \ref{lst:kmp} и \ref{lst:bm} приведены листинги алгоритма сортировки пузырьком, вставками и выбором соответственно.
+
+\begin{lstinputlisting}[
+	caption={Стандартный алгоритм},
+	label={lst:standard},
+	style={cpp},
+	linerange={6-26}
+	]{../source/string/search.cpp}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Алгоритм Кнута — Морриса — Пратта},
+	label={lst:kmp},
+	style={cpp},
+	linerange={28-68}
+	]{../source/string/search.cpp}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Алгоритм Бойера — Мура},
+	label={lst:bm},
+	style={cpp},
+	linerange={70-112}
+	]{../source/string/search.cpp}
+\end{lstinputlisting}
+
+\section{Тестирование функций}
+
+В таблице~\ref{tbl:test} приведены тесты для функций, реализующих алгоритмы поиска подстроки в строке.
+Тесты пройдены успешно.
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{Строка1} & \textbf{Строка2} & \textbf{Ожидаемый результат} \\ \hline
+			aaaaa      & a  & 1  \\ \hline
+			aapo       & po & 2  \\ \hline
+			poaa       & po & 0  \\ \hline
+			qwerty     & a  & -1 \\ \hline
+			popopopopo & po & 0  \\ \hline
+		\end{tabular}
+		\caption{Тестирование функций}
+		\label{tbl:test}
+	\end{center}
+\end{table}
+
+\section*{Вывод}
+
+Правильный выбор инструментов разработки позволил эффективно реализовать алгоритмы, настроить модульное тестирование и выполнить исследовательский раздел лабораторной работы.
+
+
+\chapter{Исследовательская часть}
+
+\section{Примеры работы}
+
+На рисунках \ref{img:example1} и \ref{img:example2} изображены примеры работы программы.
+
+\boximg{50mm}{example1}{Пример 1 работы программы}
+
+\boximg{50mm}{example2}{Пример 2 работы программы}
+
+\section{Результаты тестирования}
+
+Проверяем нашу программу на тестах из таблицы \ref{tbl:test}. Полученные результаты представлены в таблице \ref{tbl:test-results}.
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\textbf{Строка1} & \textbf{Строка2} & \textbf{КМП} & \textbf{БМ}  \\ \hline
+			aaaaa      & a  & 0  & 0  \\ \hline
+			aapo       & po & 2  & 2  \\ \hline
+			poaa       & po & 0  & 0  \\ \hline
+			qwerty     & a  & -1 & -1 \\ \hline
+			popopopopo & po & 0  & 0  \\ \hline
+		\end{tabular}
+	\end{center}
+	\caption{Результаты тестирования программы}
+	\label{tbl:test-results}
+\end{table}
+
+\section*{Вывод}
+
+В данном разделе были приведены примеры работы и протестирована программа.
+
+\chapter*{Заключение}
+\addcontentsline{toc}{chapter}{Заключение}
+
+По итогам аналитического раздела были описаны стандартный алгоритм, алгоритм Кнута — Морриса — Пратта и алгоритм Бойера — Мура для нахождения подстроки в строке.
+
+\addcontentsline{toc}{chapter}{Литература}
+\bibliographystyle{utf8gost705u}  % стилевой файл для оформления по ГОСТу
+\bibliography{51-biblio}          % имя библиографической базы (bib-файла)
+
+
+\end{document}

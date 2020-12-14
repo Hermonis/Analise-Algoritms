@@ -1,0 +1,250 @@
+\documentclass[a4paper,14pt]{extreport}
+
+\usepackage{cmap} % Улучшенный поиск русских слов в полученном pdf-файле
+\usepackage[T2A]{fontenc} % Поддержка русских букв
+\usepackage[utf8]{inputenc} % Кодировка utf8
+\usepackage[english,russian]{babel} % Языки: русский, английский
+%\usepackage{pscyr} % Нормальные шрифты
+
+\usepackage{amsmath}
+
+\usepackage{geometry}
+\geometry{left=30mm}
+\geometry{right=15mm}
+\geometry{top=20mm}
+\geometry{bottom=20mm}
+
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalsize\bfseries}
+{\thesection}
+{1em}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{8pt}
+\titlespacing*{\section}{\parindent}{*4}{*4}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+
+\usepackage{setspace}
+\onehalfspacing % Полуторный интервал
+
+\frenchspacing
+\usepackage{indentfirst} % Красная строка
+
+\usepackage{titlesec}
+\titleformat{\chapter}{\LARGE\bfseries}{\thechapter}{20pt}{\LARGE\bfseries}
+\titleformat{\section}{\Large\bfseries}{\thesection}{20pt}{\Large\bfseries}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+\lstdefinestyle{go}{
+	language=Go,
+	backgroundcolor=\color{white},
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{gray},
+	stepnumber=1,
+	numbersep=5pt,
+	frame=single,
+	tabsize=8,
+	captionpos=b,
+	breaklines=true,
+	breakatwhitespace=true,
+	escapeinside={\#*}{*)},
+	morecomment=[l][\color{magenta}]{\#},
+	columns=fullflexible
+}
+
+\usepackage{pgfplots}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+
+\usepackage{graphicx}
+\newcommand{\img}[3] {
+	\begin{figure}[h]
+		\center{\includegraphics[height=#1]{inc/img/#2}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\boximg}[3] {
+	\begin{figure}[h]
+		\center{\fbox{\includegraphics[height=#1]{inc/img/#2}}}
+		\caption{#3}
+		\label{img:#2}
+	\end{figure}
+}
+\newcommand{\imgext}[4] {
+	\begin{figure}[h!]
+		\center{\includegraphics[#1]{inc/img/#2.#3}}
+		\caption{#4}
+		\label{img:#2}
+	\end{figure}
+}
+
+\usepackage[justification=centering]{caption} % Настройка подписей float объектов
+
+\usepackage[unicode,pdftex]{hyperref} % Ссылки в pdf
+\hypersetup{hidelinks}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\usepackage{icomma} % Интеллектуальные запятые для десятичных чисел
+
+\usepackage{csvsimple}
+
+\usepackage{svg}
+
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	
+	{\footnotesize\itshape Министерство науки и высшего образования
+		Российской Федерации Федеральное государственное бюджетное
+		образовательное учреждение высшего образования «Московский
+		государственный технический университет имени Н.~Э.~Баумана
+		(национальный исследовательский университет)» (МГТУ им. Н.~Э.~Баумана)
+		\\}
+	
+	\vspace{60mm}
+	
+	\textbf{ОТЧЕТ}\\
+	По лабораторной работе №5\\
+	По курсу: «Анализ алгоритмов»\\
+	Тема: «Конвейер»\\
+	
+	\vspace{60mm}
+	
+	\hspace{70mm} Студент:\hfill Козаченко~А.~А.\\
+	\hspace{70mm} Группа: \hfill ИУ7-54Б\\
+	%\vspace{5mm}
+	\hspace{70mm} Преподаватели:\hfill Волкова~Л.~Л.,\\
+	\hfill Строганов~Ю.~В.\\
+	
+	\vfill
+	Москва, 2019
+\end{titlepage}
+
+\tableofcontents
+
+\chapter*{Введение}
+\addcontentsline{toc}{chapter}{Введение}
+
+При обработке данных могут возникать ситуации, когда необходимо обработать множество данных последовательно несколькими алгоритмами. В этом случае удобно использовать конвейерную обработку данных. Это может быть полезно при следующих задачах:
+\begin{itemize}
+	\item шифровании данных;
+	\item сортировки и фильтрации данных;
+	\item и др.
+\end{itemize}
+
+Цель данной работы: получить навык организации асинхронного взаимодействия потоков на примере конвейерной обработки данных.
+
+В рамках выполнения работы необходимо решить следующие задачи:
+\begin{itemize}
+	\item рассмотреть и изучить конвейерную обработку данных;
+	\item реализовать конвейер с количеством лент не меньше трех в многопоточной среде;
+	\item на основании проделанной работы сделать выводы.
+\end{itemize}
+
+
+\chapter{Аналитическая часть}
+
+\section{Описание конвейерной обработки данных}
+
+При конвейерной обработке данных каждая лента имеет свою очередь с некоторыми задачами, ожидающими обработки. Лента берет данные из своей очереди с входными данными, проводит с ними необходимые операции и передает в очередь следующей ленты или, в случае последней ленты, в пул обработанных задач.
+
+\section*{Вывод}
+В данной работе стоит задача реализации конвейера.
+
+\chapter{Конструкторская часть}
+
+\section{Разработка конвейерной обработки данных}
+
+Принцип работы стадийной обработки представлен на рис.~\ref{img:schema}.
+
+\imgext{height=70mm}{schema}{pdf}{Конвейерная обработка данных}
+
+\section*{Вывод}
+
+Был показан принцип работы конвейерной обработки данных.
+
+\chapter{Технологическая часть}
+
+В данном разделе приведены средства реализации и листинг кода.
+
+\section{Средства реализации}
+
+В качестве языка программирования был выбран Go, так как он предоставляет широкие возможности и крайне удобный интерфейс для эффективной реализации асинхронной, параллельной обработки данных \cite{go}.
+
+Для измерения времени использовалась стандартная библиотека \code{time}.
+Так как основное время работы составляет ожидание \code{sleep}, то достаточно замерить время работы один раз.
+
+\section{Листинг кода}
+
+В листинге \ref{lst:conveyor} представлена реализация конвейерная обработка данных.
+
+\begin{lstinputlisting}[
+	caption={Алгоритм сортировки пузырьком},
+	label={lst:conveyor},
+	style={go}
+	]{../main.go}
+\end{lstinputlisting}
+
+\section{Тестирование функций}
+
+Для тестирования были реализованы функции, представленные в листинге \ref{lst:test}.
+Результаты тестирования представлены в таблице~\ref{tbl:test}. Видно, что тестирование пройдено успешно.
+
+\begin{lstinputlisting}[
+	caption={Тестовые задачи},
+	label={lst:test},
+	style={go},
+	linerange={12-27}
+	]{../main_test.go}
+\end{lstinputlisting}
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			Входные данные & Ожидаемый результат & Результат \\ 
+			\hline
+			1,3,4 & 24  & 24\\
+			\hline
+		\end{tabular}
+		\caption{\label{tbl:test}Тестирование конвейерной обработки}
+	\end{center}
+\end{table}
+
+\section*{Вывод}
+
+Правильный выбор инструментов разработки позволил эффективно реализовать алгоритмы, настроить модульное тестирование и выполнить исследовательский раздел лабораторной работы.
+
+
+\chapter{Исследовательская часть}
+
+\section{Время выполнения}
+
+Реализованная контейнерная обработка данных работает за 1,2с. Последовательная реализация потребовала бы $(0,1 + 0,2 + 0,3) * 3 = 1,8\text{с}$, что на 50\% медленней.
+
+\section*{Вывод}
+
+Алгоритм сортировки вставками работает лучше остальных двух на случайных числах и уже отсортированных, практический интерес, конечно, представляет лишь первый случай,
+на котором сортировка вставками почти на четверть быстрее сортировки пузырьком и на тринадцатую часть быстрее сортировки выбором.
+
+
+\chapter*{Заключение}
+\addcontentsline{toc}{chapter}{Заключение}
+
+В рамках лабораторной работы была рассмотрена и изучена конвейерная обработка данных.
+Благодаря ней возможна крайне удобная реализация задач, требующих поэтапной обработки некоторого набора данных, а также в некоторых случаях позволяет значительно ускорить выполнение программы (в реализованном синтетическом примере выигрыш составил 50\%).
+
+\addcontentsline{toc}{chapter}{Литература}
+\bibliographystyle{utf8gost705u}  % стилевой файл для оформления по ГОСТу
+\bibliography{51-biblio}          % имя библиографической базы (bib-файла)
+
+
+\end{document}
